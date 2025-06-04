@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Delete Employee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background-color: #f4f6f9;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #fff;
+            padding: 2rem 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin: 0.7rem 0 0.3rem;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d0d5dd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button, .nav-btn {
+            width: 100%;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+            box-sizing: border-box;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        button {
+            background: #dc3545;
+        }
+        button:hover {
+            background: #bb2d3b;
+        }
+        .nav-btn {
+            background: #007bff;
+            margin-top: 0.7rem;
+        }
+        .nav-btn:hover {
+            background: #0069d9;
+        }
+        .message {
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        .ok {
+            color: #198754; /* green */
+        }
+        .err {
+            color: #dc3545; /* red */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Delete Employee</h2>
+
+        <form id="deleteForm">
+            <label for="eid">Employee&nbsp;ID</label>
+            <input type="number" id="eid" name="eid" required />
+            <button type="submit">Delete</button>
+        </form>
+
+        <div class="message" id="respMsg"></div>
+
+        <!-- Navigation Buttons -->
+        <a class="nav-btn" href="/index">🏠 Home</a>
+        <a class="nav-btn" href="/view">📋 View Employees</a>
+        <a class="nav-btn" href="#" onclick="history.back(); return false;">🔙 Back</a>
+    </div>
+
+    <script>
+        const form = document.getElementById('deleteForm');
+        const respMsg = document.getElementById('respMsg');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const empId = document.getElementById('eid').value.trim();
+
+            if (!empId) {
+                respMsg.textContent = 'Please enter an Employee ID.';
+                respMsg.className = 'message err';
+                return;
+            }
+
+            respMsg.textContent = '⏳ Deleting...';
+            respMsg.className = 'message';
+
+            try {
+                const response = await fetch(`/delete-employee/${empId}`, {
+                    method: 'DELETE'
+                });
+
+                const text = await response.text();
+                respMsg.textContent = text;
+                respMsg.classList.add(response.ok ? 'ok' : 'err');
+
+                if (response.ok) {
+                    form.reset();
+                }
+            } catch (error) {
+                respMsg.textContent = 'Error: ' + error;
+                respMsg.classList.add('err');
+            }
+        });
+    </script>
+</body>
+</html>

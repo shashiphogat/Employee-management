@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>View Employees</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f4f6f9;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 1.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .message {
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    .ok { color: #198754; }
+    .err { color: #dc3545; }
+
+    .nav-btn {
+      display: inline-block;
+      margin: 1.2rem 0.6rem 0 0.6rem;
+      padding: 0.6rem 1.2rem;
+      background: #007bff;
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .nav-btn:hover {
+      background: #0069d9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Employee List</h2>
+    <div class="message" id="statusMsg">Loading...</div>
+    <table id="employeeTable" style="display:none;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Salary</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Rows will be added here -->
+      </tbody>
+    </table>
+
+    <!-- Navigation Buttons -->
+    <a class="nav-btn" href="/index">🏠 Home</a>
+    <a class="nav-btn" href="#" onclick="history.back(); return false;">🔙 Back</a>
+  </div>
+
+  <script>
+    const statusMsg = document.getElementById('statusMsg');
+    const table     = document.getElementById('employeeTable');
+    const tableBody = document.getElementById('tableBody');
+
+    async function fetchEmployees() {
+      try {
+        const res = await fetch('/view-employee');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const employees = await res.json();
+
+        if (employees.length === 0) {
+          statusMsg.textContent = 'No employees found.';
+          return;
+        }
+
+        table.style.display = 'table';
+        statusMsg.style.display = 'none';
+
+        employees.forEach(emp => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${emp.id}</td>
+            <td>${emp.name}</td>
+            <td>${emp.salary.toFixed(2)}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (err) {
+        statusMsg.textContent = 'Error: ' + err.message;
+        statusMsg.className = 'message err';
+      }
+    }
+
+    fetchEmployees();
+  </script>
+</body>
+</html>

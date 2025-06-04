@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 320px;
+        }
+        h1 {
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+        .btn {
+            display: block;
+            margin: 1rem 0;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Employee Management</h1>
+        <a class="btn" href="/add">➕ Add Employee</a>
+        <a class="btn" href="/update">✏️ Update Employee</a>
+        <a class="btn" href="/delete">🗑️ Delete Employee</a>
+        <a class="btn" href="/view">📋 View Employees</a>
+    </div>
+</body>
+</html>
